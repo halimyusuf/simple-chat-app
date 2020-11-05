@@ -19,6 +19,6 @@ io.on('connection', (socket, req) => {
   });
 
   socket.on('msgData', (msg) => {
-    io.emit('msgRespFromServer', msg);
+    io.emit('msgRespFromServer', { ...msg, id: socket.id });
   });
 });
