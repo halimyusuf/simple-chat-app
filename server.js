@@ -13,7 +13,7 @@ io.on('headers', (headers, req) => {
 });
 
 io.on('connection', (socket, req) => {
-  socket.emit('connectionmsg', 'Connected');
+  socket.emit('connectionmsg', { msg: 'Connected', id: socket.id });
   socket.on('message', (msg) => {
     console.log(msg);
   });
