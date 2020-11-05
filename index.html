@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul>
+        
+    </ul>
+    <form action="" class="form-submit">
+        <input class="msg" type="text" placeholder="Enter message">
+        <input class="sendBtn" type="submit" value="Send">
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js" integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ==" crossorigin="anonymous"></script>
+    <script>
+        let socket = io('http://localhost:5000')
+        // console.log(socket);
+        socket.on('connect', (data) => {
+            socket.emit('message', "Message from frontend")
+            socket.on('connectionmsg', (msg) => {
+                console.log(msg);
+            })
+        })
+
+        document.querySelector(".form-submit").addEventListener('submit', (event) => {
+            event.preventDefault()
+            const textCont = document.querySelector(".msg").value;
+            document.querySelector(".msg").value = ''
+            socket.emit('msgData', {'text': textCont})
+        })
+
+        socket.on('msgRespFromServer', (msg) => {
+            const li = document.createElement('li')
+            li.appendChild(document.createTextNode(msg.text))
+            document.querySelector('ul').appendChild(li)
+        })
+
+    </script>
+</body>
+</html>
