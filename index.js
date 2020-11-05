@@ -1,11 +1,10 @@
 let socket = io('http://localhost:5000');
 // console.log(socket);
-let clientId = null;
 socket.on('connect', (data) => {
   console.log(data);
   socket.emit('message', 'Message from frontend');
   socket.on('connectionmsg', (msg) => {
-    clientId = msg.id;
+      console.log(msg);
   });
 });
 
@@ -21,7 +20,7 @@ socket.on('msgRespFromServer', (msg) => {
   li.appendChild(document.createTextNode(msg.text));
   li.setAttribute(
     'class',
-    `list-group-item ${clientId === msg.id ? 'text-right' : ''}`
+    `list-group-item ${socket.id === msg.id ? 'text-right' : ''}`
   );
   document.querySelector('ul').appendChild(li);
 });
